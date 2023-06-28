@@ -47,7 +47,7 @@ const Login = () => {
             onChange={handleUserChange}
             value={selectedUser}
           >
-            {/* <option value="">Select user...</option> */}
+            <option value="">Select user...</option>
             {Object.values(users).map((user) => (
               <option key={user.id} value={user.id}>
                 {user.name}
