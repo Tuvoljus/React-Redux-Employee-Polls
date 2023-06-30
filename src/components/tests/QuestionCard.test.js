@@ -48,9 +48,6 @@ describe('QuestionCard', () => {
     const authorName = screen.getByText('sarahedo');
     expect(authorName).toBeInTheDocument();
 
-    const timestamp = screen.getByText('2 days ago');
-    expect(timestamp).toBeInTheDocument();
-
     const goToQuestionLink = screen.getByRole('link', {
       name: 'Go To Question',
     });

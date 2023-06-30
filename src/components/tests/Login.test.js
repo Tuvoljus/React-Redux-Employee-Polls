@@ -140,7 +140,7 @@ describe('Login', () => {
 
     useSelector.mockReturnValue(users);
 
-    render(<Login />);
+    let view = render(<Login />);
 
     const userNameInput = screen.getByLabelText(/username:/i);
     fireEvent.change(userNameInput, { target: { value: 'Sarah Edo' } });
@@ -156,6 +156,8 @@ describe('Login', () => {
     const loginButton = screen.getByRole('button', { name: /login/i });
     fireEvent.click(loginButton);
 
+    // create a snapshot
+    expect(view).toMatchSnapshot();
     // Assert that the alert function is called with the correct message
     expect(alertSpy).toHaveBeenCalledTimes(1);
     expect(alertSpy).toHaveBeenCalledWith('Incorrect password or username');
