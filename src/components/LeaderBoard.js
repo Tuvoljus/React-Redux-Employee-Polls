@@ -39,7 +39,14 @@ const LeaderBoard = () => {
             {sortedUsers.map((user, index) => (
               <tr key={user.id}>
                 <td>{index + 1}</td>
-                <td>{user.name}</td>
+                <td>
+                  <img
+                    src={user.avatarURL}
+                    alt={user.name}
+                    style={{ width: '50px', marginRight: '10px' }}
+                  />
+                  {user.name}
+                </td>
                 <td>{Object.keys(user.answers).length}</td>
                 <td>{user.questions.length}</td>
               </tr>

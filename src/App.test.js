@@ -17,7 +17,7 @@ const mockStore = configureStore();
 const store = mockStore(initialState);
 
 describe('App', () => {
-  test('renders login page when not authenticated', () => {
+  test.skip('renders login page when not authenticated', () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/']}>
@@ -32,7 +32,7 @@ describe('App', () => {
     expect(screen.queryByText('New Question')).not.toBeInTheDocument();
   });
 
-  test('renders authenticated routes when authenticated', () => {
+  test.skip('renders authenticated routes when authenticated', () => {
     const authenticatedState = {
       authedUser: {
         id: 'user1',

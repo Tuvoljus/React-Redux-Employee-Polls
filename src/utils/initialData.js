@@ -24,10 +24,11 @@ export let users = {
     questions: ['loxhs1bqm25b708cmbf3g', 'vthrdm985a262al8qx3do'],
   },
   mtsamis: {
-    id: 'danabramov',
+    id: 'mtsamis',
     password: 'xyz123',
-    name: 'Dan Abramov',
-    avatarURL: 'https://tylermcginnis.com/would-you-rather/dan.jpg',
+    name: 'Mike Tsamis',
+    avatarURL:
+      'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/86.png',
     answers: {
       xj352vofupe1dqz9emx13r: 'optionOne',
       vthrdm985a262al8qx3do: 'optionTwo',
@@ -39,7 +40,8 @@ export let users = {
     id: 'zoshikanlu',
     password: 'pass246',
     name: 'Zenobia Oshikanlu',
-    avatarURL: null,
+    avatarURL:
+      'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/10.png',
     answers: {
       xj352vofupe1dqz9emx13r: 'optionOne',
     },

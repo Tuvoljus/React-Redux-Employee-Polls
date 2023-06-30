@@ -39,7 +39,7 @@ export let users = {
     id: 'zoshikanlu',
     password: 'pass246',
     name: 'Zenobia Oshikanlu',
-    avatarURL: null,
+    avatarURL: 'https://tylermcginnis.com/would-you-rather/zenobia.jpg',
     answers: {
       xj352vofupe1dqz9emx13r: 'optionOne',
     },

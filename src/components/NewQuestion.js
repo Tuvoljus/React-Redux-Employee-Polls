@@ -8,8 +8,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { addQuestion } from '../slices/questions';
-import { saveQuestion } from '../utils/api';
+import { saveQuestion, saveQuestionAnswer } from '../utils/api';
 import { addQuestionToUser } from '../slices/authedUser';
+import submitQuestion from '../utils/submitQuestion';
 
 const NewQuestion = () => {
   const dispatch = useDispatch();
@@ -49,20 +50,30 @@ const NewQuestion = () => {
     }
   }
 
-  function handleOnSubmit(e) {
+  async function handleOnSubmit(e) {
     e.preventDefault();
     const { optionOne, optionTwo } = questions;
     const author = authedUser.id;
+    const selectedOption = optionOne.text !== '' ? 'optionOne' : 'optionTwo';
 
-    saveQuestion(optionOne.text, optionTwo.text, author)
-      .then((savedQuestion) => {
-        dispatch(addQuestion(savedQuestion));
-        dispatch(addQuestionToUser({ questionId: savedQuestion.id }));
-        navigate('/');
-      })
-      .catch((error) => {
-        console.log('Error saving question:', error);
-      });
+    try {
+      const savedQuestion = await saveQuestion(
+        optionOne.text,
+        optionTwo.text,
+        author
+      );
+      dispatch(addQuestion(savedQuestion));
+
+      // Save the question answer
+      await saveQuestionAnswer(authedUser.id, savedQuestion.id, selectedOption);
+
+      // Add the question to the user's answered questions
+      dispatch(addQuestionToUser({ questionId: savedQuestion.id }));
+
+      navigate('/');
+    } catch (error) {
+      console.log('Error saving question:', error);
+    }
   }
 
   return (

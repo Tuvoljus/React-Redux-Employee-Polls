@@ -17,7 +17,11 @@ const QuestionCard = ({ question }) => {
   console.log(question, 'QUESTION in QUERSTION CARD');
   return (
     <Card key={question.id} style={{ width: '18rem' }} className="text-center">
-      <Card.Img variant="top" src={`${authorPicture}`} />
+      <Card.Img
+        data-testid="author-picture"
+        variant="top"
+        src={`${authorPicture}`}
+      />
       <Card.Body>
         {/* <Card.Title>{question.optionOne.text}</Card.Title> */}
         <p>by</p>

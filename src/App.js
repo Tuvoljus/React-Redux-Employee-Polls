@@ -4,7 +4,7 @@ import { Route, Routes, Navigate, redirect } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import NavBar from './components/NavBar';
 import NewQuestion from './components/NewQuestion';
-import QuestionPool from './components/QuestionPoll';
+import QuestionPoll from './components/QuestionPoll';
 import VoteQuestion from './components/VoteQuestion';
 import Login from './components/Login';
 import LeaderBoard from './components/LeaderBoard';
@@ -38,7 +38,7 @@ const App = () => {
         </Row>
         <Routes>
           {/* <Route path="/login" element={<Login />} /> */}
-          <Route path="/" exact element={<QuestionPool />} />
+          <Route path="/" exact element={<QuestionPoll />} />
           <Route path="/question/:id" element={<VoteQuestion />} />
           <Route path="/leaderboard" element={<LeaderBoard />} />
           <Route path="/add" element={<NewQuestion />} />

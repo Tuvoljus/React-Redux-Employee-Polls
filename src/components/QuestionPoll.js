@@ -4,7 +4,7 @@ import Stack from 'react-bootstrap/Stack';
 import Row from 'react-bootstrap/Row';
 import Questions from './Questions';
 
-const QuestionPool = () => {
+const QuestionPoll = () => {
   return (
     <Container>
       <Stack direction="vertical" gap={5}>
@@ -12,11 +12,11 @@ const QuestionPool = () => {
           <h1>Question Poll</h1>
         </Row>
         <Row>
-          <Questions />
+          <Questions data-testid="questions-component" />
         </Row>
       </Stack>
     </Container>
   );
 };
 
-export default QuestionPool;
+export default QuestionPoll;

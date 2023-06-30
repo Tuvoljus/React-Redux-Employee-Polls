@@ -11,6 +11,10 @@ import { updateQuestion } from '../slices/questions';
 import { updateSelectedAnswer } from '../slices/authedUser';
 import Stack from 'react-bootstrap/Stack';
 
+export const useAuthedUser = () => useSelector((state) => state.authedUser);
+export const useQuestions = () => useSelector((state) => state.questions);
+export const useUsers = () => useSelector((state) => state.users);
+
 const VoteQuestion = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -27,6 +31,7 @@ const VoteQuestion = () => {
 
   console.log(users, 'MEINE USers');
   console.log(questions, 'My Question');
+  console.log(authedUser, 'AUTHED_USER');
 
   useEffect(() => {
     const getAuthorAnswers = authedUser.answers;
@@ -143,7 +148,7 @@ const VoteQuestion = () => {
 
         <Row>
           <div>
-            <h3>Would You Rather</h3>
+            <h3 data-testid="header-question">Would You Rather</h3>
           </div>
         </Row>
         <Row>
@@ -152,6 +157,7 @@ const VoteQuestion = () => {
               {/* Render the options for the question */}
               <Col>
                 <Button
+                  data-testid="btn-option-one"
                   disabled={isButtonDispabled}
                   type="submit"
                   name="optionOne"
@@ -167,6 +173,7 @@ const VoteQuestion = () => {
               </Col>
               <Col>
                 <Button
+                  data-testid="btn-option-two"
                   disabled={isButtonDispabled}
                   type="submit"
                   name="optionTwo"
@@ -182,7 +189,7 @@ const VoteQuestion = () => {
               </Col>
             </Row>
           </Form>
-          {successClassName !== '' && <p>you have already chosen</p>}
+          {/* {successClassName !== '' && <p>you have already chosen</p>} */}
         </Row>
       </Stack>
     </Container>
