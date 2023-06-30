@@ -12,7 +12,6 @@ const LeaderBoard = () => {
     return [...filterOutAuthedUser, authedUser];
   });
 
-  // Sort the combinedUsers array in descending order based on the combined length of answers and questions
   const sortedUsers = [...combinedUsers].sort(
     (userA, userB) =>
       Object.keys(userB.answers).length +

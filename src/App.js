@@ -12,7 +12,6 @@ import NotFound from './components/NotFound';
 
 function PrivateRoute({ children }) {
   const authedUser = useSelector((state) => state.authedUser);
-  console.log(authedUser, 'AUTH on APP JS PrivateRoute');
   return Object.keys(authedUser).length !== 0 &&
     authedUser.constructor === Object ? (
     <>{children}</>
@@ -23,7 +22,6 @@ function PrivateRoute({ children }) {
 
 const App = () => {
   window.addEventListener('beforeunload', () => {
-    // Remove the desired data from local storage
     localStorage.removeItem('authedUser');
   });
 

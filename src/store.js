@@ -12,16 +12,6 @@ const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(thunkMiddleware),
-  //   middleware: [thunk, ...getDefaultMiddleware()],
 });
 
 export default store;
-
-// import { configureStore } from '@reduxjs/toolkit';
-// // import rootReducer from './rootReducers';
-
-// // const store = configureStore({
-// //   reducer: rootReducer,
-// // });
-
-// // export default store;

@@ -14,7 +14,6 @@ test('renders the app without errors', () => {
     </Provider>
   );
 
-  screen.debug();
   const headingElement = screen.getByRole('heading', { level: 2 });
   expect(headingElement).toHaveTextContent('Login');
 

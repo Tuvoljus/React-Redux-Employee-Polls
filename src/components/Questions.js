@@ -8,9 +8,6 @@ const Questions = () => {
   const authedUser = useSelector((state) => state.authedUser);
   const questions = useSelector((state) => state.questions);
   const questionIds = Object.keys(questions);
-
-  console.log(questions, 'QUESTIONS_TEST');
-  // Separate the questionIds into answered and unanswered arrays
   const answeredQuestionIds = questionIds.filter((questionId) =>
     Object.keys(authedUser.answers).includes(questionId)
   );

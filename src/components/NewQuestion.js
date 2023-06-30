@@ -23,7 +23,6 @@ const NewQuestion = () => {
 
   function handleOnChange(e) {
     const inputField = e.target;
-    console.log(questions, 'MY STATE');
     switch (inputField.id) {
       case 'firstOption':
         const valueFirstOption = inputField.value;
@@ -64,15 +63,11 @@ const NewQuestion = () => {
       );
       dispatch(addQuestion(savedQuestion));
 
-      // Save the question answer
       await saveQuestionAnswer(authedUser.id, savedQuestion.id, selectedOption);
-
-      // Add the question to the user's answered questions
       dispatch(addQuestionToUser({ questionId: savedQuestion.id }));
-
       navigate('/');
     } catch (error) {
-      console.log('Error saving question:', error);
+      alert('Error saving question:', error);
     }
   }
 

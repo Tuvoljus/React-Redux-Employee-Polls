@@ -11,8 +11,8 @@ const appReducer = combineReducers({
 
 const rootReducer = (state, action) => {
   if (action.type === 'authedUser/logoutUser') {
-    state = undefined; // Reset the state to undefined
-    localStorage.removeItem('authedUser'); // Remove the authedUser from localStorage
+    state = undefined;
+    localStorage.removeItem('authedUser');
   }
   return appReducer(state, action);
 };

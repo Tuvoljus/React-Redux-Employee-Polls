@@ -29,10 +29,6 @@ const VoteQuestion = () => {
     { colorSuccessBtnOptionTwo: '' }
   );
 
-  console.log(users, 'MEINE USers');
-  console.log(questions, 'My Question');
-  console.log(authedUser, 'AUTHED_USER');
-
   useEffect(() => {
     const getAuthorAnswers = authedUser.answers;
     const checkIfQuestionEqualAuthor = Object.keys(getAuthorAnswers).filter(
@@ -41,16 +37,13 @@ const VoteQuestion = () => {
 
     setIsButtonDisabled(checkIfQuestionEqualAuthor.length > 0);
 
-    const answerValue = getAuthorAnswers[id]; // Get the value from the filtered answer
-
-    console.log(answerValue, 'Filtered Answer Value');
-    console.log(checkIfQuestionEqualAuthor, 'Checked');
+    const answerValue = getAuthorAnswers[id];
 
     const buttons = [...document.getElementsByTagName('button')];
     const successButton = buttons.find(
       (button) => button.getAttribute('name') === answerValue
     );
-    console.log(successButton, 'SUCC');
+
     switch (answerValue) {
       case 'optionOne':
         setSuccessClassName({ colorSuccessBtnOptionOne: 'btn-success' });
@@ -64,7 +57,6 @@ const VoteQuestion = () => {
     // setSuccessClassName(successButton ? 'btn-success' : '');
   }, [authedUser.answers, id]);
 
-  console.log(authedUser, 'AUrhed User first Call');
   const handleOnSubmit = (e, selectedOption) => {
     e.preventDefault();
 
@@ -74,26 +66,12 @@ const VoteQuestion = () => {
       return;
     }
 
-    // // Update the user's answers
-    // const updatedUser = {
-    //   ...authedUser,
-    //   answers: {
-    //     ...authedUser.answers,
-    //     [id]: selectedOption,
-    //   },
-    // };
-
-    // console.log(updatedUser.id, ' USER Id Zeile 46');
-    // console.log(updatedUser, 'Updated USER Zeile 47');
-    // console.log(authedUser, 'AUTH USER Zeile 48');
-
     const updatedQuestion = {
       questionId: id,
       option: selectedOption,
       userId: authedUser.id,
     };
 
-    console.log(updatedQuestion, 'UPDATED QUESTION ZEile 55');
     dispatch(updateSelectedAnswer({ questionId: id, selectedOption }));
     dispatch(updateQuestion(updatedQuestion));
     navigate('/');
@@ -119,17 +97,11 @@ const VoteQuestion = () => {
     };
   };
 
-  console.log(votes, 'VOTES');
-
-  console.log(question, 'Die Frage');
-
-  // const author = users[question.author];
   const author = question ? users[question.author] : null;
 
   if (!question || !author) {
     return <div>Loading...</div>;
   }
-  console.log(author, 'get AUTHOR');
 
   return (
     <Container className="text-center">
@@ -154,7 +126,6 @@ const VoteQuestion = () => {
         <Row>
           <Form onSubmit={handleOnSubmit}>
             <Row>
-              {/* Render the options for the question */}
               <Col>
                 <Button
                   data-testid="btn-option-one"
