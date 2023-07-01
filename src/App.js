@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { createContext, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import NavBar from './components/NavBar';
@@ -11,15 +10,26 @@ import LeaderBoard from './components/LeaderBoard';
 import NotFound from './components/NotFound';
 import PrivateRoute from './PrivateRoute';
 
+export const AppContext = createContext();
+
+export const AppProvider = ({ children }) => {
+  const [invalidUrl, setInvalidUrl] = useState(false);
+
+  return (
+    <AppContext.Provider value={{ invalidUrl, setInvalidUrl }}>
+      {children}
+    </AppContext.Provider>
+  );
+};
+
 const App = () => {
   return (
-    <>
+    <AppProvider>
       <Row>
         <NavBar />
       </Row>
       <Routes>
         <Route path="/login" element={<Login />} />
-
         <Route path="*" element={<NotFound />} />
         <Route
           path="/"
@@ -55,7 +65,7 @@ const App = () => {
           }
         />
       </Routes>
-    </>
+    </AppProvider>
   );
 };
 

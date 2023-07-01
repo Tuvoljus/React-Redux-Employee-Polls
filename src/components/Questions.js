@@ -39,7 +39,7 @@ const Questions = () => {
             eventKey="newQuestion"
             title={`New Question${answeredQuestionIds.length > 0 && 's'}`}
           >
-            <Row md={2}>
+            <Row>
               <Col>
                 <h3>New Questions</h3>
                 {sortedUnansweredQuestionIds.length > 0 ? (

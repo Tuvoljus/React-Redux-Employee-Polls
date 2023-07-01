@@ -15,6 +15,7 @@ import Login from '../Login';
 import { setAuthedUser } from '../../slices/authedUser';
 import { Router } from 'react-router';
 import configureStore from 'redux-mock-store';
+import { AppProvider } from '../../AppContext';
 
 const mockStore = configureStore();
 
@@ -81,7 +82,11 @@ describe('Login', () => {
     useSelector.mockReturnValue(users);
 
     const history = createMemoryHistory();
-    render(<Login />);
+    render(
+      <AppProvider>
+        <Login />
+      </AppProvider>
+    );
 
     const loginButton = screen.getByRole('button', { name: /login/i });
     expect(loginButton).toBeDisabled();
@@ -105,7 +110,11 @@ describe('Login', () => {
     useSelector.mockReturnValue(users);
 
     const history = createMemoryHistory();
-    render(<Login />);
+    render(
+      <AppProvider>
+        <Login />
+      </AppProvider>
+    );
 
     const loginButton = screen.getByRole('button', { name: /login/i });
     expect(loginButton).toBeDisabled();
@@ -141,7 +150,11 @@ describe('Login', () => {
 
     useSelector.mockReturnValue(users);
 
-    let view = render(<Login />);
+    let view = render(
+      <AppProvider>
+        <Login />
+      </AppProvider>
+    );
 
     const userNameInput = screen.getByPlaceholderText(/username/i);
     fireEvent.change(userNameInput, { target: { value: 'Sarah Edo' } });

@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { setAuthedUser } from '../slices/authedUser';
 import { Col, Container, FloatingLabel, Row, Stack } from 'react-bootstrap';
+import { AppContext } from '../AppContext';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { invalidUrl, setInvalidUrl } = useContext(AppContext);
   const users = useSelector((state) => state.users);
   const [selectedUser, setSelectedUser] = useState('');
   const [username, setUsername] = useState('');
@@ -37,12 +39,18 @@ const Login = () => {
 
     if (user) {
       dispatch(setAuthedUser({ userId: user.id }));
-      navigate('/');
+
+      if (invalidUrl) {
+        setInvalidUrl(false); // Clear the invalid URL flag
+        navigate('/not-found'); // Redirect to the NotFound page
+      } else {
+        // Redirect to the home page
+        navigate('/');
+      }
     } else {
       alert('Incorrect password or username');
     }
   };
-
   return (
     <Container>
       <Stack gap={3} className="p-4 g-col-6">

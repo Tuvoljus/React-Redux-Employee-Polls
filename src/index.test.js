@@ -4,12 +4,15 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import store from './store';
+import { AppProvider } from './AppContext';
 
 test('renders the app without errors', () => {
   render(
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <AppProvider>
+          <App />
+        </AppProvider>
       </BrowserRouter>
     </Provider>
   );

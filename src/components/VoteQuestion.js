@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -7,8 +7,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import { updateQuestion } from '../slices/questions';
-import { updateSelectedAnswer } from '../slices/authedUser';
+import { updateSelectedAnswer, logoutUser } from '../slices/authedUser';
 import Stack from 'react-bootstrap/Stack';
+import { AppContext } from '../AppContext';
 
 export const useAuthedUser = () => useSelector((state) => state.authedUser);
 export const useQuestions = () => useSelector((state) => state.questions);
@@ -16,10 +17,12 @@ export const useUsers = () => useSelector((state) => state.users);
 
 const VoteQuestion = () => {
   const { id } = useParams();
+  const { setInvalidUrl } = useContext(AppContext);
   const dispatch = useDispatch();
   const authedUser = useSelector((state) => state.authedUser);
   const questions = useSelector((state) => state.questions);
   const users = useSelector((state) => state.users);
+  const navigate = useNavigate();
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [successClassName, setSuccessClassName] = useState({
@@ -28,6 +31,14 @@ const VoteQuestion = () => {
   });
 
   useEffect(() => {
+    if (!questions[id]) {
+      setInvalidUrl(true);
+      sessionStorage.removeItem('authedUser');
+      dispatch(logoutUser());
+      navigate('/login');
+      return;
+    }
+
     const getAuthorAnswers = authedUser.answers;
     const checkIfQuestionEqualAuthor = Object.keys(getAuthorAnswers).filter(
       (answerId) => answerId === id
@@ -47,7 +58,7 @@ const VoteQuestion = () => {
       default:
         break;
     }
-  }, [authedUser.answers, id]);
+  }, [authedUser.answers, dispatch, id, questions, setInvalidUrl, navigate]);
 
   const handleOnSubmit = (e, selectedOption) => {
     e.preventDefault();

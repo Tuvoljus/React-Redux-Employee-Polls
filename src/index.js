@@ -6,13 +6,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import store from './store';
 import App from './App';
+import { AppProvider } from './AppContext';
 
 const root = createRoot(document.getElementById('root'));
 
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <AppProvider>
+        <App />
+      </AppProvider>
     </BrowserRouter>
   </Provider>
 );
