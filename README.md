@@ -2,7 +2,7 @@
 
 ## Installation
 
-Clone the GitHub repository and use Bundler to install the gem dependencies.
+Clone the GitHub repository
 
 ```
 $ git clone https://github.com/Tuvoljus/React-Redux-Employee-Polls.git
