@@ -22,7 +22,7 @@ test('renders the navigation links and user information correctly', () => {
     </Router>
   );
 
-  const logoLink = screen.getByRole('link', { name: /question pool/i });
+  const logoLink = screen.getByText(/question poll/i);
   expect(logoLink).toBeInTheDocument();
   expect(logoLink).toHaveAttribute('href', '/');
 
@@ -37,7 +37,7 @@ test('renders the navigation links and user information correctly', () => {
   const userInfoText = screen.getByText(/signed in as: John Doe/i);
   expect(userInfoText).toBeInTheDocument();
 
-  const logoutLink = screen.getByRole('link', { name: /logout user/i });
+  const logoutLink = screen.getByText('Logout');
   expect(logoutLink).toBeInTheDocument();
   fireEvent.click(logoutLink);
   expect(mockDispatch).toHaveBeenCalledTimes(1);

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { setAuthedUser } from '../slices/authedUser';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, FloatingLabel, Row, Stack } from 'react-bootstrap';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -45,57 +45,64 @@ const Login = () => {
 
   return (
     <Container>
-      <Row>
-        <h2>Login</h2>
-      </Row>
-      <Row>
-        <Col>
-          <Form onSubmit={handleLogin}>
-            <Form.Group controlId="formUserName">
-              <Form.Label>Username:</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={handleUsernameChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formPassword">
-              <Form.Label>Password:</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={handlePasswordChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formUserSelect">
-              <Form.Label data-testid="select-user">Select User:</Form.Label>
-              <Form.Control
-                as="select"
-                onChange={handleUserChange}
-                value={selectedUser}
+      <Stack gap={3} className="p-4 g-col-6">
+        <Row>
+          <p>
+            Please provide your username and password for using employee poll!
+          </p>
+        </Row>
+        <Row>
+          <h2>Login</h2>
+        </Row>
+        <Row>
+          <Col>
+            <Form onSubmit={handleLogin}>
+              <Form.Group controlId="formUserName">
+                <FloatingLabel label="username" className="mb-3">
+                  <Form.Control
+                    type="text"
+                    placeholder="username"
+                    value={username}
+                    onChange={handleUsernameChange}
+                  />
+                </FloatingLabel>
+              </Form.Group>
+              <Form.Group controlId="formPassword">
+                <FloatingLabel label="password" className="mb-3">
+                  <Form.Control
+                    type="password"
+                    placeholder="password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                  />
+                </FloatingLabel>
+              </Form.Group>
+              <Form.Group controlId="formUserSelect">
+                <Form.Control
+                  as="select"
+                  onChange={handleUserChange}
+                  value={selectedUser}
+                >
+                  <option value="">Select user...</option>
+                  {Object.values(users).map((user) => (
+                    <option key={user.id} value={user.id}>
+                      {user.name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+              <br />
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={!password || !username}
               >
-                <option value="">Select user...</option>
-                {Object.values(users).map((user) => (
-                  <option key={user.id} value={user.id}>
-                    {user.name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-            <Button
-              variant="primary"
-              type="submit"
-              // disabled={isLoginButtonDisabled}
-              disabled={!password || !username}
-            >
-              Login
-            </Button>
-          </Form>
-        </Col>
-      </Row>
+                Login
+              </Button>
+            </Form>
+          </Col>
+        </Row>
+      </Stack>
     </Container>
   );
 };

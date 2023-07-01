@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { users } from '../utils/initialData';
+import { setSessionStorageItem, getSessionStorageItem } from '../utils/storage';
 
-const initialState = {};
+const initialState = getSessionStorageItem('authedUser') || {};
 
 export const authedUser = createSlice({
   name: 'authedUser',
@@ -11,13 +12,15 @@ export const authedUser = createSlice({
       const { userId } = action.payload;
       const user = users[userId];
 
-      state.id = user.id;
-      state.name = user.name;
-      state.avatarURL = user.avatarURL;
-      state.answers = user.answers;
-      state.questions = user.questions;
+      if (user) {
+        state.id = user.id;
+        state.name = user.name;
+        state.avatarURL = user.avatarURL;
+        state.answers = user.answers;
+        state.questions = user.questions;
 
-      localStorage.setItem('authedUser', JSON.stringify(user));
+        setSessionStorageItem('authedUser', JSON.stringify(state));
+      }
     },
     updateSelectedAnswer: (state, action) => {
       const { questionId, selectedOption } = action.payload;
@@ -25,20 +28,20 @@ export const authedUser = createSlice({
         ...state.answers,
         [questionId]: selectedOption,
       };
-      localStorage.setItem('authedUser', JSON.stringify(state));
+      setSessionStorageItem('authedUser', JSON.stringify(state));
     },
     addQuestionToUser: (state, action) => {
       const { questionId } = action.payload;
       state.questions.push(questionId);
-      localStorage.setItem('authedUser', JSON.stringify(state));
+      setSessionStorageItem('authedUser', JSON.stringify(state));
     },
     logoutUser: () => ({}),
   },
-  extraReducers: (builder) => {
-    builder.addCase(logoutUser, (state, action) => {
-      return {};
-    });
-  },
+  // extraReducers: (builder) => {
+  //   builder.addCase(logoutUser, (state, action) => {
+  //     return {};
+  //   });
+  // },
 });
 
 export const {

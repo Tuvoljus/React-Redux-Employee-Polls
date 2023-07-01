@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
-import { setAuthedUser } from '../slices/authedUser';
 import { updateQuestion } from '../slices/questions';
 import { updateSelectedAnswer } from '../slices/authedUser';
 import Stack from 'react-bootstrap/Stack';
@@ -19,15 +18,14 @@ const VoteQuestion = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const authedUser = useSelector((state) => state.authedUser);
-  const navigate = useNavigate();
   const questions = useSelector((state) => state.questions);
   const users = useSelector((state) => state.users);
 
-  const [isButtonDispabled, setIsButtonDisabled] = useState(false);
-  const [successClassName, setSuccessClassName] = useState(
-    { colorSuccessBtnOptionOne: '' },
-    { colorSuccessBtnOptionTwo: '' }
-  );
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [successClassName, setSuccessClassName] = useState({
+    colorSuccessBtnOptionOne: '',
+    colorSuccessBtnOptionTwo: '',
+  });
 
   useEffect(() => {
     const getAuthorAnswers = authedUser.answers;
@@ -39,11 +37,6 @@ const VoteQuestion = () => {
 
     const answerValue = getAuthorAnswers[id];
 
-    const buttons = [...document.getElementsByTagName('button')];
-    const successButton = buttons.find(
-      (button) => button.getAttribute('name') === answerValue
-    );
-
     switch (answerValue) {
       case 'optionOne':
         setSuccessClassName({ colorSuccessBtnOptionOne: 'btn-success' });
@@ -54,13 +47,11 @@ const VoteQuestion = () => {
       default:
         break;
     }
-    // setSuccessClassName(successButton ? 'btn-success' : '');
   }, [authedUser.answers, id]);
 
   const handleOnSubmit = (e, selectedOption) => {
     e.preventDefault();
 
-    // Check if the question exists
     if (!questions[id]) {
       console.error(`Question with ID ${id} does not exist.`);
       return;
@@ -74,11 +65,9 @@ const VoteQuestion = () => {
 
     dispatch(updateSelectedAnswer({ questionId: id, selectedOption }));
     dispatch(updateQuestion(updatedQuestion));
-    navigate('/');
   };
 
   const question = questions[id];
-
   const votes = () => {
     const optionOneVotes = question.optionOne.votes.length;
     const optionTwoVotes = question.optionTwo.votes.length;
@@ -100,8 +89,22 @@ const VoteQuestion = () => {
   const author = question ? users[question.author] : null;
 
   if (!question || !author) {
-    return <div>Loading...</div>;
+    return (
+      <Container>
+        <Row className="p-4 g-col-6">
+          <p>
+            <strong>
+              The Question you are searching for is not available!
+            </strong>
+          </p>
+        </Row>
+      </Container>
+    );
   }
+
+  const hasVoted =
+    question.optionOne.votes.includes(authedUser.id) ||
+    question.optionTwo.votes.includes(authedUser.id);
 
   return (
     <Container className="text-center">
@@ -129,7 +132,7 @@ const VoteQuestion = () => {
               <Col>
                 <Button
                   data-testid="btn-option-one"
-                  disabled={isButtonDispabled}
+                  disabled={isButtonDisabled}
                   type="submit"
                   name="optionOne"
                   onClick={(e) => handleOnSubmit(e, 'optionOne')}
@@ -137,15 +140,17 @@ const VoteQuestion = () => {
                 >
                   {question.optionOne.text}
                 </Button>
-                <p>
-                  Votes: {votes().optionOneVotes} (
-                  {votes().optionOnePercentage.toFixed(2)}%){' '}
-                </p>
+                {hasVoted && (
+                  <p>
+                    Votes: {votes().optionOneVotes} (
+                    {votes().optionOnePercentage.toFixed(2)}%)
+                  </p>
+                )}
               </Col>
               <Col>
                 <Button
                   data-testid="btn-option-two"
-                  disabled={isButtonDispabled}
+                  disabled={isButtonDisabled}
                   type="submit"
                   name="optionTwo"
                   onClick={(e) => handleOnSubmit(e, 'optionTwo')}
@@ -153,14 +158,15 @@ const VoteQuestion = () => {
                 >
                   {question.optionTwo.text}
                 </Button>
-                <p>
-                  Votes: {votes().optionTwoVotes} (
-                  {votes().optionTwoPercentage.toFixed(2)}%)
-                </p>
+                {hasVoted && (
+                  <p>
+                    Votes: {votes().optionTwoVotes} (
+                    {votes().optionTwoPercentage.toFixed(2)}%)
+                  </p>
+                )}
               </Col>
             </Row>
           </Form>
-          {/* {successClassName !== '' && <p>you have already chosen</p>} */}
         </Row>
       </Stack>
     </Container>

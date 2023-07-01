@@ -10,6 +10,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { addQuestion } from '../slices/questions';
 import { saveQuestion, saveQuestionAnswer } from '../utils/api';
 import { addQuestionToUser } from '../slices/authedUser';
+import submitQuestion from '../utils/submitQuestion';
 
 const NewQuestion = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const NewQuestion = () => {
 
   function handleOnChange(e) {
     const inputField = e.target;
+    console.log(questions, 'MY STATE');
     switch (inputField.id) {
       case 'firstOption':
         const valueFirstOption = inputField.value;
@@ -62,11 +64,15 @@ const NewQuestion = () => {
       );
       dispatch(addQuestion(savedQuestion));
 
+      // Save the question answer
       await saveQuestionAnswer(authedUser.id, savedQuestion.id, selectedOption);
+
+      // Add the question to the user's answered questions
       dispatch(addQuestionToUser({ questionId: savedQuestion.id }));
+
       navigate('/');
     } catch (error) {
-      alert('Error saving question:', error);
+      console.log('Error saving question:', error);
     }
   }
 

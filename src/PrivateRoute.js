@@ -1,15 +1,23 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
+import { createSelector } from 'reselect';
 
-const PrivateRoute = ({ children }) => {
-  const authedUser = useSelector((state) => state.authedUser);
+const authedUserSelector = (state) => state.authedUser;
 
-  if (!authedUser) {
-    return <Navigate to="/login" replace />;
-  }
+const memoizedAuthedUserSelector = createSelector(
+  [authedUserSelector],
+  (authedUser) => authedUser
+);
 
-  return <>{children}</>;
-};
+function PrivateRoute({ children }) {
+  const authedUser = useSelector(memoizedAuthedUserSelector);
+  return Object.keys(authedUser).length !== 0 &&
+    authedUser.constructor === Object ? (
+    <>{children}</>
+  ) : (
+    <Navigate to="/login" />
+  );
+}
 
 export default PrivateRoute;

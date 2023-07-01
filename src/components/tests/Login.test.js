@@ -85,10 +85,11 @@ describe('Login', () => {
 
     const loginButton = screen.getByRole('button', { name: /login/i });
     expect(loginButton).toBeDisabled();
-    const userNameInput = screen.getByLabelText(/username:/i);
+    const userNameInput = screen.getByPlaceholderText(/username/i);
+    // const userNameInput = screen.getByText(/username/i);
     fireEvent.change(userNameInput, { target: { value: 'Sarah Edo' } });
 
-    const passwordInput = screen.getByLabelText(/password:/i);
+    const passwordInput = screen.getByPlaceholderText(/password/i);
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
 
     expect(loginButton).not.toBeDisabled();
@@ -108,10 +109,10 @@ describe('Login', () => {
 
     const loginButton = screen.getByRole('button', { name: /login/i });
     expect(loginButton).toBeDisabled();
-    const userNameInput = screen.getByLabelText(/username:/i);
+    const userNameInput = screen.getByPlaceholderText(/username/i);
     fireEvent.change(userNameInput, { target: { value: 'Sarah Edo' } });
 
-    const passwordInput = screen.getByLabelText(/password:/i);
+    const passwordInput = screen.getByPlaceholderText(/password/i);
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
 
     expect(loginButton).not.toBeDisabled();
@@ -142,10 +143,10 @@ describe('Login', () => {
 
     let view = render(<Login />);
 
-    const userNameInput = screen.getByLabelText(/username:/i);
+    const userNameInput = screen.getByPlaceholderText(/username/i);
     fireEvent.change(userNameInput, { target: { value: 'Sarah Edo' } });
 
-    const passwordInput = screen.getByLabelText(/password:/i);
+    const passwordInput = screen.getByPlaceholderText(/password/i);
     fireEvent.change(passwordInput, { target: { value: 'incorrectpassword' } });
 
     // Spy on the window.alert function

@@ -1,8 +1,12 @@
+import React from 'react';
 import Container from 'react-bootstrap/Container';
 import QuestionCard from './QuestionCard';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Row from 'react-bootstrap/Row';
 import Stack from 'react-bootstrap/Stack';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+import { Col } from 'react-bootstrap';
 
 const Questions = () => {
   const authedUser = useSelector((state) => state.authedUser);
@@ -16,34 +20,60 @@ const Questions = () => {
     (questionId) => !answeredQuestionIds.includes(questionId)
   );
 
+  const sortQuestionsByDate = (questionIds) => {
+    return questionIds.sort(
+      (a, b) => questions[b].timestamp - questions[a].timestamp
+    );
+  };
+
+  const sortedUnansweredQuestionIds = sortQuestionsByDate(
+    unansweredQuestionIds
+  );
+  const sortedAnsweredQuestionIds = sortQuestionsByDate(answeredQuestionIds);
+
   return (
     <>
       <Container>
-        <Stack gap={5}>
-          <Row>
-            <h3>New Questions</h3>
-            {unansweredQuestionIds.length > 0 ? (
-              <Stack direction="horizontal" gap={4}>
-                {unansweredQuestionIds.map((questionId) => {
-                  const question = questions[questionId];
-                  return <QuestionCard key={questionId} question={question} />;
-                })}
-              </Stack>
-            ) : (
-              <p>No no more questions at the momment.</p>
-            )}
-          </Row>
-
-          <Row>
-            <h3>Completed</h3>
-            <Stack direction="horizontal" gap={4}>
-              {answeredQuestionIds.map((questionId) => {
-                const question = questions[questionId];
-                return <QuestionCard key={questionId} question={question} />;
-              })}
-            </Stack>
-          </Row>
-        </Stack>
+        <Tabs gap={5}>
+          <Tab
+            eventKey="newQuestion"
+            title={`New Question${answeredQuestionIds.length > 0 && 's'}`}
+          >
+            <Row md={2}>
+              <Col>
+                <h3>New Questions</h3>
+                {sortedUnansweredQuestionIds.length > 0 ? (
+                  <Stack direction="horizontal" gap={4}>
+                    {sortedUnansweredQuestionIds.map((questionId) => {
+                      const question = questions[questionId];
+                      return (
+                        <QuestionCard key={questionId} question={question} />
+                      );
+                    })}
+                  </Stack>
+                ) : (
+                  <p>No more questions at the moment.</p>
+                )}
+              </Col>
+            </Row>
+          </Tab>
+          <Tab eventKey="completed" title="Completed">
+            <Row>
+              <Col>
+                {' '}
+                <h3>Completed</h3>
+                <Stack direction="horizontal" gap={4}>
+                  {sortedAnsweredQuestionIds.map((questionId) => {
+                    const question = questions[questionId];
+                    return (
+                      <QuestionCard key={questionId} question={question} />
+                    );
+                  })}
+                </Stack>
+              </Col>
+            </Row>
+          </Tab>
+        </Tabs>
       </Container>
     </>
   );

@@ -4,13 +4,14 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
 const LeaderBoard = () => {
-  const combinedUsers = useSelector((state) => {
-    const { authedUser, users } = state;
-    const filterOutAuthedUser = Object.values(users).filter(
-      (user) => user.id !== authedUser.id
-    );
-    return [...filterOutAuthedUser, authedUser];
-  });
+  const authedUser = useSelector((state) => state.authedUser);
+  const users = useSelector((state) => state.users);
+
+  const filteredUsers = Object.values(users).filter(
+    (user) => user.id !== authedUser.id
+  );
+
+  const combinedUsers = [...filteredUsers, authedUser];
 
   const sortedUsers = [...combinedUsers].sort(
     (userA, userB) =>

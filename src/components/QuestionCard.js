@@ -1,9 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
-import { useSelector, useDispatch } from 'react-redux';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Stack from 'react-bootstrap/Stack';
+import { useSelector } from 'react-redux';
 import { formatDate } from '../utils/helpers';
 
 const QuestionCard = ({ question }) => {
@@ -14,16 +12,31 @@ const QuestionCard = ({ question }) => {
   const questionDate = new Date(question.timestamp);
   const timeDiff = Math.abs(currentDate - questionDate);
   let timeAgo;
-  if (timeDiff < 24 * 60 * 60 * 1000) {
+
+  const millisecondsPerDay = 24 * 60 * 60 * 1000;
+  const millisecondsPerMonth = 30 * millisecondsPerDay;
+  const millisecondsPerYear = 365 * millisecondsPerDay;
+
+  if (timeDiff < millisecondsPerDay) {
     const hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
     timeAgo = `${hoursDiff} hours ago`;
-  } else {
-    const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  } else if (timeDiff < 7 * millisecondsPerDay) {
+    const daysDiff = Math.floor(timeDiff / millisecondsPerDay);
     timeAgo = `${daysDiff} days ago`;
+  } else if (timeDiff < millisecondsPerMonth) {
+    const monthsDiff = Math.floor(timeDiff / millisecondsPerMonth);
+    timeAgo = `${monthsDiff} months ago`;
+  } else if (timeDiff < millisecondsPerYear) {
+    const yearsDiff = Math.floor(timeDiff / millisecondsPerYear);
+    timeAgo = `${yearsDiff} years ago`;
+  } else {
+    timeAgo = `more than ${Math.floor(
+      timeDiff / millisecondsPerYear
+    )} years ago`;
   }
 
   return (
-    <Card key={question.id} style={{ width: '18rem' }} className="text-center">
+    <Card key={question.id} style={{ width: '15rem' }} className="text-center">
       <Card.Img
         data-testid="author-picture"
         variant="top"

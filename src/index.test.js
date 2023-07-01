@@ -17,10 +17,10 @@ test('renders the app without errors', () => {
   const headingElement = screen.getByRole('heading', { level: 2 });
   expect(headingElement).toHaveTextContent('Login');
 
-  // Assert that the user select is rendered with the correct options
-  const userSelectElement = screen.getByLabelText('Select User:');
+  const userSelectElement = screen.getByRole('combobox');
+
   expect(userSelectElement).toBeInTheDocument();
-  expect(userSelectElement).toHaveValue(''); // Ensure the initial value is empty
+  expect(userSelectElement).toHaveValue('');
   expect(userSelectElement).toContainHTML(
     '<option value="sarahedo">Sarah Edo</option>'
   );
@@ -34,14 +34,12 @@ test('renders the app without errors', () => {
     '<option value="zoshikanlu">Zenobia Oshikanlu</option>'
   );
 
-  // Assert that the password input is rendered with the correct attributes
-  const passwordInput = screen.getByLabelText('Password:');
+  const passwordInput = screen.getByPlaceholderText(/password/i);
   expect(passwordInput).toBeInTheDocument();
   expect(passwordInput).toHaveAttribute('type', 'password');
-  expect(passwordInput).toHaveAttribute('placeholder', 'Password');
+  expect(passwordInput).toHaveAttribute('placeholder', 'password');
   expect(passwordInput).toHaveValue('');
 
-  // Assert that the login button is rendered and disabled initially
   const loginButton = screen.getByRole('button', { name: 'Login' });
   expect(loginButton).toBeInTheDocument();
   expect(loginButton).toBeDisabled();
